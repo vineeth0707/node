@@ -1,0 +1,35 @@
+Deploying a image stored in dockerhub on kubernetes cluster using minikube
+
+->Install and Setup Minikube
+	*Goto official minikube website and find the commands for installation
+	*curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+	*sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+	
+->Initialize and start kubernetes environment 
+	*minikube start
+	
+->Install kubectl and verify
+	*sudo snap install kubectl --classic
+	*kubectl version
+	*kubectl cluster info
+	
+->Authenticate with dockerhub credentials
+	*eval $(minikube docker-env)
+	*docker login
+	
+->Deploy the application and expose the port at which it is running
+	*kubectl create deployment <app-name> --image=<docker_hub_username>/<docker_hub_repo_name>:<tagname>
+	*kubectl expose deployment <app-name> --type=NodePort --port=<port_in_which_app_runs>
+	
+->After a minute or two, you can view your deployment
+	*minikube service <app-name>
+	*This gives the URL where the app is running and opens up browser showing the response
+	
+->Delete Deployment and service
+	*kubectl delete deployment <app-name>
+	*kubectl delete service <app-name>
+	
+->stop minikube
+	*minikube start
+
+
